@@ -1,0 +1,43 @@
+﻿<Window x:Class="TreeSize.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:model="clr-namespace:TreeSize.Model"
+        xmlns:viewModel="clr-namespace:TreeSize.ViewModel"
+        mc:Ignorable="d"
+        Title="Tree Size" Height="550" Width="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+            <ComboBox Name="ComboBox" Height="25" Width="100" Margin="10 0 10 0" />
+            <Button Height="25" Width="100" Click="ButtonGo_OnClick">Go</Button>
+        </StackPanel>
+
+        <TreeView Name="Root" TreeViewItem.Expanded="TreeViewItem_Expanded" Grid.Row="1">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type model:Node}"
+                                          ItemsSource="{Binding Path=Nodes, UpdateSourceTrigger=PropertyChanged}">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <viewModel:SizeConverter x:Key="SizeConverter" />
+                        </StackPanel.Resources>
+
+                        <Image Source="{Binding Path=ImagePath}" Height="16" Width="16" Margin="0 1 0 1" />
+
+                        <TextBlock Width="200" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="0 0 10 0" />
+
+                        <TextBlock Width="100"
+                                   Text="{Binding Size, Converter={StaticResource SizeConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </Grid>
+</Window>
